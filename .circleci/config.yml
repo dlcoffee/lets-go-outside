@@ -3,8 +3,24 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
 
+jobs:
+  build:
+    executor: docker
+    steps:
+      - run: echo "this is the build step"
+
+  deploy-stg:
+    executor: docker
+    steps:
+      - run: echo "this deploys to a staging environment"
+
+  deploy-prd:
+    executor: docker
+    steps:
+      - run: echo "this deploys to the production environment"
+
 workflows:
-  matrix-tests:
+  build-test-deploy:
     jobs:
       - node/test:
           matrix:
@@ -13,3 +29,16 @@ workflows:
                 - 13.11.0
                 - 12.16.0
                 - 10.19.0
+      - build:
+          requires:
+            - node/test
+      - deploy-stg:
+          requires:
+            - build
+      - hold-for-prd:
+          type: approval
+          requires:
+            - deploy-stg
+      - deploy-prd:
+          requires:
+            - hold-for-prd
