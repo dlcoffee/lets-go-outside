@@ -5,17 +5,20 @@ orbs:
 
 jobs:
   build:
-    executor: docker
+    docker:
+      - image: cimg/node:16.10.0
     steps:
       - run: echo "this is the build step"
 
   deploy-stg:
-    executor: docker
+    docker:
+      - image: cimg/node:16.10.0
     steps:
       - run: echo "this deploys to a staging environment"
 
   deploy-prd:
-    executor: docker
+    docker:
+      - image: cimg/node:16.10.0
     steps:
       - run: echo "this deploys to the production environment"
 
