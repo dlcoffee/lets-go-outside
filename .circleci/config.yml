@@ -41,6 +41,7 @@ workflows:
       - hold-for-prd:
           type: approval
           requires:
+            - build
             - deploy-stg
       - deploy-prd:
           requires:
